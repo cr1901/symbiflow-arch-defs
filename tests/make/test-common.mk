@@ -216,6 +216,7 @@ VPR_CMD = \
 		\
 		--timing_analysis off \
 		--clock_modeling_method route \
+		--timing_analysis off \
 
 
 #		--constant_net_method route \

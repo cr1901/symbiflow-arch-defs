@@ -50,7 +50,7 @@
    </pb_type>
    <interconnect>
     <direct name="D_IN[0]" input="input.inpad" output="PAD.D_IN[0]"/>
-    <direct name="PIN"    input="input.inpad" output="PAD.PIN"    />
+    <direct name="PIN"     input="input.inpad" output="PAD.PIN"    />
    </interconnect>
    <metadata>
     <meta name="hlc_property">disable_pull_up</meta>
