@@ -33,3 +33,6 @@ env
 *.hlc
 build
 build-*
+
+model.xml
+*.sort.xml
