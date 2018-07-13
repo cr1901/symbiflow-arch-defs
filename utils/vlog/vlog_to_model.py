@@ -53,7 +53,7 @@ outfile = "model.xml"
 if "o" in args and args.o is not None:
     outfile = args.o
 
-aig_json = yosys.run.vlog_to_json(args.infiles, flatten=True, aig=True)
+aig_json = yosys.run.vlog_to_json(args.infiles, flatten=False)
 
 if args.top is not None:
     yj = YosysJSON(aig_json, args.top)
