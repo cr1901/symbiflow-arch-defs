@@ -1,4 +1,6 @@
-SUBDIRS := $(sort $(dir $(foreach SUBDIR,$(wildcard *),$(wildcard $(SUBDIR)/Makefile))))
+SUBDIRS_ALL := $(sort $(dir $(foreach SUBDIR,$(wildcard *),$(wildcard $(SUBDIR)/Makefile))))
+SUBDIRS_EXCLUDED := $(sort $(dir $(foreach PATTERN,$(SUBDIR_EXCLUDE),$(wildcard $(PATTERN)/Makefile))))
+SUBDIRS := $(filter-out $(SUBDIRS_EXCLUDED),$(SUBDIRS_ALL))
 $(info SUBDIRS = $(SUBDIRS))
 
 $(SUBDIRS):
