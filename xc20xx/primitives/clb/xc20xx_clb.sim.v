@@ -1,4 +1,4 @@
-module XC2_CLB(
+module XC20XX_CLB(
     A, B, C, D, // INPUTS
     X, Y, // OUTPUTS
     K // CLK
