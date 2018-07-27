@@ -1,6 +1,7 @@
 /* XC20XX_CLBCL- The combinational section of the CLB. The parameters match
 config bits of the Combinational Logic sections's inputs/outputs as implemented
-in silicon. */
+in silicon (as well as using a composite of Options 1, 2, and 3 of Figure 5
+in the XC2064 datasheet as a guide). */
 
 module XC20XX_CLBCL(
     A, B, C, D, // INPUTS
@@ -9,12 +10,12 @@ module XC20XX_CLBCL(
 );
     parameter [7:0] F_INIT = 0;
     parameter [7:0] G_INIT = 0;
-    parameter F_IN0 = "A"; // 0- A, 1- B
-    parameter F_IN1 = "B"; // 0- B, 1- C
-    parameter F_IN2 = "C"; // 0- C, 1- D, 2- Q, 3- Invalid
-    parameter G_IN0 = "A"; // 0- A, 1- B
-    parameter G_IN1 = "B"; // 0- B, 1- C
-    parameter G_IN2 = "C"; // 0- C, 1- D, 2- Q, 3- Invalid
+    parameter F_IN0 = "A"; // A, B
+    parameter F_IN1 = "B"; // B, C
+    parameter F_IN2 = "C"; // C, D, Q
+    parameter G_IN0 = "A"; // A, B
+    parameter G_IN1 = "B"; // B, C
+    parameter G_IN2 = "C"; // C, D, Q
     parameter MUX_FG = 0;
 
     input wire A;
