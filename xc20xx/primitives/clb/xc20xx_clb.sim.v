@@ -2,6 +2,9 @@
 routing MUXes are based on Figure 4 of the XC2064 datasheet. The default values
 are the topmost inputs to the MUXes. */
 
+`include "../comb/xc20xx_clbcl.sim.v"
+`include "../sync/xc20xx_clbse.sim.v"
+
 module XC20XX_CLB(
     A, B, C, D, // INPUTS
     X, Y, // OUTPUTS

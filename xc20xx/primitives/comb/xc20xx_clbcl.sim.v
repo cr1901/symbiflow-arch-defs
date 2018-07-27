@@ -3,6 +3,8 @@ config bits of the Combinational Logic sections's inputs/outputs as implemented
 in silicon (as well as using a composite of Options 1, 2, and 3 of Figure 5
 in the XC2064 datasheet as a guide). */
 
+`include "../lut/xc20xx_lut3.sim.v"
+
 module XC20XX_CLBCL(
     A, B, C, D, // INPUTS
     Q, // FEEDBACK

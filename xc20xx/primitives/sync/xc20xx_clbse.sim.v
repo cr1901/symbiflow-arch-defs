@@ -1,6 +1,9 @@
 /* XC20XX_CLBCL- The storage section of the CLB. The parameters correspond to
 routing MUX config bits of Figure 6 of the XC2064 datasheet. */
 
+`include "../dff/xc20xx_dffsr.sim.v"
+`include "../dff/xc20xx_dlatch.sim.v"
+
 module XC20XX_CLBSE(
     A, C, D, // INPUTS
     F, G, // FROM LUT OUTPUTS
