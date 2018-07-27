@@ -8,12 +8,12 @@ module XC20XX_LUT(
 );
     parameter [7:0] F_INIT = 0;
     parameter [7:0] G_INIT = 0;
-    parameter F_IN0 = 0; // 0- A, 1- B
-    parameter F_IN1 = 0; // 0- B, 1- C
-    parameter [1:0] F_IN2 = 2'b0; // 0- C, 1- D, 2- Q, 3- Invalid
-    parameter G_IN0 = 0; // 0- A, 1- B
-    parameter G_IN1 = 0; // 0- B, 1- C
-    parameter [1:0] G_IN2 = 2'b0; // 0- C, 1- D, 2- Q, 3- Invalid
+    parameter F_IN0 = "A"; // 0- A, 1- B
+    parameter F_IN1 = "B"; // 0- B, 1- C
+    parameter F_IN2 = "C"; // 0- C, 1- D, 2- Q, 3- Invalid
+    parameter G_IN0 = "A"; // 0- A, 1- B
+    parameter G_IN1 = "B"; // 0- B, 1- C
+    parameter G_IN2 = "C"; // 0- C, 1- D, 2- Q, 3- Invalid
     parameter MUX_FG = 0;
 
     input wire A;
@@ -31,28 +31,50 @@ module XC20XX_LUT(
 
 
     generate
-        if(F_IN0) begin
-            assign F_in0 = B;
-        end else begin
-            assign F_in0 = A;
-        end
+        case(F_IN0)
+            "B": begin
+                assign F_in0 = B;
+            end
 
-        if(F_IN1) begin
-            assign F_in1 = C;
-        end else begin
-            assign F_in1 = B;
-        end
+            "A": begin
+                assign F_in0 = A;
+            end
+
+            default: begin
+                initial begin
+                    $display("ERROR: F_IN0 must use A or B as input.");
+                    $finish;
+                end
+            end
+        endcase
+
+        case(F_IN1)
+            "C": begin
+                assign F_in1 = C;
+            end
+
+            "B": begin
+                assign F_in1 = B;
+            end
+
+            default: begin
+                initial begin
+                    $display("ERROR: F_IN1 must use C or B as input.");
+                    $finish;
+                end
+            end
+        endcase
 
         case(F_IN2)
-            2'd0: begin
+            "C": begin
                 assign F_in2 = C;
             end
 
-            2'd1: begin
+            "D": begin
                 assign F_in2 = D;
             end
 
-            2'd2: begin
+            "Q": begin
                 assign F_in2 = Q;
             end
 
@@ -66,28 +88,50 @@ module XC20XX_LUT(
     endgenerate
 
     generate
-        if(G_IN0) begin
-            assign G_in0 = B;
-        end else begin
-            assign G_in0 = A;
-        end
+        case(G_IN0)
+            "B": begin
+                assign G_in0 = B;
+            end
 
-        if(G_IN1) begin
-            assign G_in1 = C;
-        end else begin
-            assign G_in1 = B;
-        end
+            "A": begin
+                assign G_in0 = A;
+            end
+
+            default: begin
+                initial begin
+                    $display("ERROR: G_IN0 must use A or B as input.");
+                    $finish;
+                end
+            end
+        endcase
+
+        case(G_IN1)
+            "C": begin
+                assign G_in1 = C;
+            end
+
+            "B": begin
+                assign G_in1 = B;
+            end
+
+            default: begin
+                initial begin
+                    $display("ERROR: G_IN1 must use C or B as input.");
+                    $finish;
+                end
+            end
+        endcase
 
         case(G_IN2)
-            2'd0: begin
+            "C": begin
                 assign G_in2 = C;
             end
 
-            2'd1: begin
+            "D": begin
                 assign G_in2 = D;
             end
 
-            2'd2: begin
+            "Q": begin
                 assign G_in2 = Q;
             end
 
