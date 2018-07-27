@@ -1,7 +1,8 @@
-/* XC20XX_LUT- The most-generic LUT implementation. The parameters match
-config bits of the LUT's inputs/outputs as implemented in silicon. */
+/* XC20XX_CLBCL- The combinational section of the CLB. The parameters match
+config bits of the Combinational Logic sections's inputs/outputs as implemented
+in silicon. */
 
-module XC20XX_LUT(
+module XC20XX_CLBCL(
     A, B, C, D, // INPUTS
     Q, // FEEDBACK
     F, G // OUTPUTS
