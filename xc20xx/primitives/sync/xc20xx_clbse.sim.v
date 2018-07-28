@@ -4,17 +4,18 @@ routing MUX config bits of Figure 6 of the XC2064 datasheet. */
 `include "../dff/xc20xx_dffsr.sim.v"
 `include "../dff/xc20xx_dlatch.sim.v"
 
+`include "../routing/smux/smux.sim.v"
+`include "../routing/clkinmux/clkinmux.sim.v"
+`include "../routing/clkpolmux/clkpolmux.sim.v"
+`include "../routing/rmux/rmux.sim.v"
+
 module XC20XX_CLBSE(
     A, C, D, // INPUTS
     F, G, // FROM LUT OUTPUTS
     K, // CLK INPUT
     Q // OUTPUT
 );
-    parameter S_IN = "A"; // A, F, NONE
-    parameter CLK_IN = "K"; // K, C, G
-    parameter CLK_POL = "POSITIVE"; // POSITIVE, NEGATIVE, NONE
     parameter MODE = "DFF"; // DFF, DLATCH
-    parameter R_IN = "D"; // D, F, NONE
 
     input wire A;
     input wire C;
@@ -30,95 +31,29 @@ module XC20XX_CLBSE(
     wire S_in, Clk_in, R_in, Clk_sig;
 
 
-    generate
-        case(S_IN)
-            "A": begin
-                assign S_in = A;
-            end
+    SMUX smux(
+        .A(A), .F(F), .GND(1'b0),
+        .S_IN(S_in)
+    );
 
-            "F": begin
-                assign S_in = F;
-            end
 
-            "NONE": begin
-                assign S_in = 1'b0;
-            end
+    CLKINMUX clkinmux(
+        .K(K), .C(C), .G(G),
+        .CLK_SIG(Clk_sig)
+    );
 
-            default: begin
-                initial begin
-                    $display("ERROR: S_IN must be A, F, or NONE.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
 
-    generate
-        case(CLK_IN)
-            "K": begin
-                assign Clk_sig = K;
-            end
+    CLKPOLMUX clkpolmux(
+        .CLK(Clk_sig), .CLK_INV(~Clk_sig), .GND(1'b0),
+        .CLK_IN(Clk_in)
+    );
 
-            "C": begin
-                assign Clk_sig = C;
-            end
 
-            "G": begin
-                assign Clk_sig = G;
-            end
+    RMUX rmux(
+        .D(D), .G(G), .GND(1'b0),
+        .R_IN(R_in)
+    );
 
-            default: begin
-                initial begin
-                    $display("ERROR: CLK_IN must be K, C, or G.");
-                    $finish;
-                end
-            end
-        endcase
-
-        case(CLK_POL)
-            "POSITIVE": begin
-                assign Clk_in = Clk_sig;
-            end
-
-            "NEGATIVE": begin
-                assign Clk_in = ~Clk_sig;
-            end
-
-            "NONE": begin
-                assign Clk_in = 1'b0;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: CLK_POL must be POSITIVE, NEGATIVE, or NONE.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
-
-    generate
-        case(R_IN)
-            "D": begin
-                assign R_in = D;
-            end
-
-            "G": begin
-                assign R_in = G;
-            end
-
-            "NONE": begin
-                assign R_in = 1'b0;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: R_IN must be D, G, or NONE.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
 
     generate
         case(MODE)

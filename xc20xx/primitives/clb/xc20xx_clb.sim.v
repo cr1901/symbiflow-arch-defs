@@ -19,11 +19,7 @@ module XC20XX_CLB(
     parameter MUX_FG = 0;
 
     // XC20XX_CLBSE parameters
-    parameter S_IN = "A"; // A, F, NONE
-    parameter CLK_IN = "K"; // K, C, G
-    parameter CLK_POL = "POSITIVE"; // POSITIVE, NEGATIVE, NONE
     parameter MODE = "DFF"; // DFF, DLATCH
-    parameter R_IN = "D"; // D, F, NONE
 
 
     input wire A;
@@ -61,11 +57,7 @@ module XC20XX_CLB(
     );
 
     XC20XX_CLBSE #(
-        .S_IN(S_IN),
-        .CLK_IN(CLK_IN),
-        .CLK_POL(CLK_POL),
         .MODE(MODE),
-        .R_IN(R_IN)
     ) SE (
         A, C, D,
         F, G,
