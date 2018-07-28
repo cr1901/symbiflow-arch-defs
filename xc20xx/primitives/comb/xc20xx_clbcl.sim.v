@@ -5,6 +5,13 @@ in the XC2064 datasheet as a guide). */
 
 `include "../lut/xc20xx_lut3.sim.v"
 
+`include "../routing/f0mux/f0mux.sim.v"
+`include "../routing/f1mux/f1mux.sim.v"
+`include "../routing/f2mux/f2mux.sim.v"
+`include "../routing/g0mux/g0mux.sim.v"
+`include "../routing/g1mux/g1mux.sim.v"
+`include "../routing/g2mux/g2mux.sim.v"
+
 module XC20XX_CLBCL(
     A, B, C, D, // INPUTS
     Q, // FEEDBACK
@@ -12,12 +19,6 @@ module XC20XX_CLBCL(
 );
     parameter [7:0] F_INIT = 0;
     parameter [7:0] G_INIT = 0;
-    parameter F_IN0 = "A"; // A, B
-    parameter F_IN1 = "B"; // B, C
-    parameter F_IN2 = "C"; // C, D, Q
-    parameter G_IN0 = "A"; // A, B
-    parameter G_IN1 = "B"; // B, C
-    parameter G_IN2 = "C"; // C, D, Q
     parameter MUX_FG = 0;
 
     input wire A;
@@ -34,119 +35,36 @@ module XC20XX_CLBCL(
     wire F_out, G_out;
 
 
-    generate
-        case(F_IN0)
-            "B": begin
-                assign F_in0 = B;
-            end
+    F0MUX f0mux(
+        .A(A), .B(B),
+        .F_IN0(F_in0)
+    );
 
-            "A": begin
-                assign F_in0 = A;
-            end
+    F1MUX f1mux(
+        .B(B), .C(C),
+        .F_IN1(F_in1)
+    );
 
-            default: begin
-                initial begin
-                    $display("ERROR: F_IN0 must use A or B as input.");
-                    $finish;
-                end
-            end
-        endcase
+    F2MUX f2mux(
+        .C(C), .D(D), .Q(Q),
+        .F_IN2(F_in2)
+    );
 
-        case(F_IN1)
-            "C": begin
-                assign F_in1 = C;
-            end
 
-            "B": begin
-                assign F_in1 = B;
-            end
+    G0MUX g0mux(
+        .A(A), .B(B),
+        .G_IN0(G_in0)
+    );
 
-            default: begin
-                initial begin
-                    $display("ERROR: F_IN1 must use C or B as input.");
-                    $finish;
-                end
-            end
-        endcase
+    G1MUX g1mux(
+        .B(B), .C(C),
+        .G_IN1(G_in1)
+    );
 
-        case(F_IN2)
-            "C": begin
-                assign F_in2 = C;
-            end
-
-            "D": begin
-                assign F_in2 = D;
-            end
-
-            "Q": begin
-                assign F_in2 = Q;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: F_IN2 must use C, D, or Q as input.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
-
-    generate
-        case(G_IN0)
-            "B": begin
-                assign G_in0 = B;
-            end
-
-            "A": begin
-                assign G_in0 = A;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: G_IN0 must use A or B as input.");
-                    $finish;
-                end
-            end
-        endcase
-
-        case(G_IN1)
-            "C": begin
-                assign G_in1 = C;
-            end
-
-            "B": begin
-                assign G_in1 = B;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: G_IN1 must use C or B as input.");
-                    $finish;
-                end
-            end
-        endcase
-
-        case(G_IN2)
-            "C": begin
-                assign G_in2 = C;
-            end
-
-            "D": begin
-                assign G_in2 = D;
-            end
-
-            "Q": begin
-                assign G_in2 = Q;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: G_IN2 must use C, D, or Q as input.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
+    G2MUX g2mux(
+        .C(C), .D(D), .Q(Q),
+        .G_IN2(G_in2)
+    );
 
 
     XC20XX_LUT3 #(

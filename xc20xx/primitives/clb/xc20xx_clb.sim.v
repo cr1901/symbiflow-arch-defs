@@ -16,12 +16,6 @@ module XC20XX_CLB(
     // XC20XX_CLBCL parameters
     parameter [7:0] F_INIT = 0;
     parameter [7:0] G_INIT = 0;
-    parameter F_IN0 = "A"; // A, B
-    parameter F_IN1 = "B"; // B, C
-    parameter F_IN2 = "C"; // C, D, Q
-    parameter G_IN0 = "A"; // A, B
-    parameter G_IN1 = "B"; // B, C
-    parameter G_IN2 = "C"; // C, D, Q
     parameter MUX_FG = 0;
 
     // XC20XX_CLBSE parameters
@@ -59,12 +53,6 @@ module XC20XX_CLB(
     XC20XX_CLBCL #(
         .F_INIT(F_INIT),
         .G_INIT(G_INIT),
-        .F_IN0(F_IN0),
-        .F_IN1(F_IN1),
-        .F_IN2(F_IN2),
-        .G_IN0(G_IN0),
-        .G_IN1(G_IN1),
-        .G_IN2(G_IN2),
         .MUX_FG(MUX_FG)
     ) CL (
         A, B, C, D,
