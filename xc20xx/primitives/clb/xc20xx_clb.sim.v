@@ -4,6 +4,7 @@ are the topmost inputs to the MUXes. */
 
 `include "../comb/xc20xx_clbcl.sim.v"
 `include "../sync/xc20xx_clbse.sim.v"
+`include "../routing/xmux/xmux.sim.v"
 
 module XC20XX_CLB(
     A, B, C, D, // INPUTS
@@ -11,7 +12,6 @@ module XC20XX_CLB(
     K // CLK
 );
     // XC20XX_CLB parameters
-    parameter X_OUT = "F"; // F, G, Q
     parameter Y_OUT = "Q"; // F, G, Q
 
     // XC20XX_CLBCL parameters
@@ -46,28 +46,10 @@ module XC20XX_CLB(
     wire F, G, Q;
 
 
-    generate
-        case(X_OUT)
-            "F": begin
-                assign X = F;
-            end
-
-            "G": begin
-                assign X = G;
-            end
-
-            "Q": begin
-                assign X = Q;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: X_OUT must use F, G, or Q as input.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
+    XMUX xmux(
+        .F(F), .G(G), .Q(Q),
+        .X_OUT(X)
+    );
 
     generate
         case(Y_OUT)
