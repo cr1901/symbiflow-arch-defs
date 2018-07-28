@@ -5,14 +5,13 @@ are the topmost inputs to the MUXes. */
 `include "../comb/xc20xx_clbcl.sim.v"
 `include "../sync/xc20xx_clbse.sim.v"
 `include "../routing/xmux/xmux.sim.v"
+`include "../routing/ymux/ymux.sim.v"
 
 module XC20XX_CLB(
     A, B, C, D, // INPUTS
     X, Y, // OUTPUTS
     K // CLK
 );
-    // XC20XX_CLB parameters
-    parameter Y_OUT = "Q"; // F, G, Q
 
     // XC20XX_CLBCL parameters
     parameter [7:0] F_INIT = 0;
@@ -51,28 +50,10 @@ module XC20XX_CLB(
         .X_OUT(X)
     );
 
-    generate
-        case(Y_OUT)
-            "F": begin
-                assign Y = F;
-            end
-
-            "G": begin
-                assign Y = G;
-            end
-
-            "Q": begin
-                assign Y = Q;
-            end
-
-            default: begin
-                initial begin
-                    $display("ERROR: Y_OUT must use F, G, or Q as input.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
+    YMUX ymux(
+        .F(F), .G(G), .Q(Q),
+        .Y_OUT(Y)
+    );
 
 
     XC20XX_CLBCL #(
