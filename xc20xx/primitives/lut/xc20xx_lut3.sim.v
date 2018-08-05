@@ -1,3 +1,4 @@
+(* blackbox *)
 module XC20XX_LUT3(
     IN0, IN1, IN2, // INPUTS
     OUT // OUTPUTS
