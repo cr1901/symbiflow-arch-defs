@@ -71,7 +71,7 @@ module XC20XX_CLB(
     endfunction
 
 
-    localparam [2:0] XMUX_BITS = out_bits(X_OUT);
+    localparam [1:0] XMUX_BITS = out_bits(X_OUT);
     XMUX #(
         .S(XMUX_BITS)
     ) xmux(
@@ -79,7 +79,7 @@ module XC20XX_CLB(
         .X_OUT(X)
     );
 
-    localparam [2:0] YMUX_BITS = out_bits(Y_OUT);
+    localparam [1:0] YMUX_BITS = out_bits(Y_OUT);
     YMUX #(
         .S(YMUX_BITS)
     ) ymux(
