@@ -11,6 +11,7 @@ in the XC2064 datasheet as a guide). */
 `include "../routing/g0mux/g0mux.sim.v"
 `include "../routing/g1mux/g1mux.sim.v"
 `include "../routing/g2mux/g2mux.sim.v"
+`include "../routing/fgselmux/fgselmux.sim.v"
 
 module XC20XX_CLBCL(
     A, B, C, D, // INPUTS
@@ -165,13 +166,22 @@ module XC20XX_CLBCL(
     );
 
 
-    generate if(MUX_FG) begin
-        // FIXME: Verify G is in fact the top bits of a "LUT4".
-        assign F = B ? G_out : F_out;
-        assign G = B ? G_out : F_out;
-    end else begin
-        assign F = F_out;
-        assign G = G_out;
-    end endgenerate
+    wire muxFG_out;
+    assign muxFG_out = B ? G_out : F_out;
+
+    FGSELMUX #(
+        .S(MUX_FG)
+    ) fgselmuxf(
+        .FG_IN(F_out), .MUX_FG(muxFG_out),
+        .FG_OUT(F)
+    );
+
+    FGSELMUX #(
+        .S(MUX_FG)
+    ) fgselmuxg(
+        .FG_IN(G_out), .MUX_FG(muxFG_out),
+        .FG_OUT(G)
+    );
+
 
 endmodule
