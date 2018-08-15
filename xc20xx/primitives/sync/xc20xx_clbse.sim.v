@@ -8,6 +8,7 @@ routing MUX config bits of Figure 6 of the XC2064 datasheet. */
 `include "../routing/clkinmux/clkinmux.sim.v"
 `include "../routing/clkpolmux/clkpolmux.sim.v"
 `include "../routing/rmux/rmux.sim.v"
+`include "../routing/semux/semux.sim.v"
 
 module XC20XX_CLBSE(
     A, C, D, // INPUTS
@@ -123,6 +124,24 @@ module XC20XX_CLBSE(
       endcase
     endfunction
 
+    function [0:0] se_bits();
+      input reg [47:0] MODE;
+
+      case(R_IN)
+        "DFF": begin
+            se_bits = 1'h0;
+        end
+
+        "DLATCH": begin
+            se_bits = 1'h1;
+        end
+
+        default: begin
+            se_bits = 1'h0;
+        end
+      endcase
+    endfunction
+
 
     localparam SMUX_BITS = sin_bits(S_IN);
     SMUX #(
@@ -157,31 +176,26 @@ module XC20XX_CLBSE(
     );
 
 
-    generate
-        case(MODE)
-            "DFF": begin
-                XC20XX_DFFSR se_dff(
-                    F, S_in, R_in,
-                    Clk_in,
-                    Q
-                );
-            end
+    wire Q_dff, Q_latch;
 
-            // FIXME: Possibly use XC20XX_DLATCHSR primitive (to-be-written).
-            "DLATCH": begin
-                XC20XX_DLATCH se_latch(
-                    F,
-                    Clk_in,
-                    Q
-                );
-            end
+    XC20XX_DFFSR se_dff(
+        F, S_in, R_in,
+        Clk_in,
+        Q_dff
+    );
 
-            default: begin
-                initial begin
-                    $display("ERROR: MODE must be DFF or DLATCH.");
-                    $finish;
-                end
-            end
-        endcase
-    endgenerate
+    XC20XX_DLATCH se_latch(
+        F,
+        Clk_in,
+        Q_latch
+    );
+
+    localparam [1:0] SEMUX_BITS = se_bits(MODE);
+    SEMUX #(
+        .S(SEMUX_BITS)
+    ) semux(
+        .DFF(Q_dff), .DLATCH(Q_latch),
+        .Q(Q)
+    );
+
 endmodule
