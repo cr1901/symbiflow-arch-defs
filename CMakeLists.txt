@@ -56,6 +56,8 @@ add_env_executable(EXE xcfasm REQUIRED)
 add_env_executable(EXE xc7frames2bit REQUIRED)
 add_env_executable(EXE bitread REQUIRED)
 add_env_executable(EXE prjxray-config)
+add_env_executable(EXE ecppack REQUIRED)
+add_env_executable(EXE ecpunpack REQUIRED)
 
 get_target_property_required(PYTHON3 env PYTHON3)
 
@@ -89,6 +91,7 @@ if (NOT DEFINED ENV{CI} OR NOT $ENV{CI})
 add_subdirectory(xc)
 endif (NOT DEFINED ENV{CI} OR NOT $ENV{CI})
 add_subdirectory(ice40)
+add_subdirectory(machxo2)
 add_subdirectory(testarch)
 add_subdirectory(tests)
 
